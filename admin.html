@@ -7,9 +7,9 @@
 <title>ABI 27 — Verwaltung</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
-<meta name="theme-color" content="#f3f1ec">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=5">
+<meta name="theme-color" content="#08445f">
 </head>
 <body>
 <div class="demo-banner" hidden><b>Demo-Modus:</b> Noch nicht mit der Cloud verbunden – beliebige Login-Daten funktionieren, alles bleibt in diesem Browser.</div>
@@ -17,20 +17,27 @@
 <!-- Login -->
 <div class="login-page" id="loginView" hidden>
  <header class="topbar">
-   <span class="mark">ABI<sup>’27</sup></span>
-   <span class="meta"><span data-cfg="schoolName">CJD Sellin</span><span>Verwaltung</span></span>
+   <span class="brand"><span class="badge-abi">ABI 27</span><span class="school"><b data-cfg="schoolName">CJD Sellin</b>Verwaltung</span></span>
  </header>
- <div class="login-hero"><div class="giant">ABI<span class="yr">’27</span></div></div>
+ <section class="hero">
+  <div class="inner">
+    <div>
+      <span class="kicker">Einschulungsfotos · Verwaltung</span>
+      <h1>Willkommen zurück.</h1>
+      <p>Hier sehen Sie alle eingesendeten Fotos und starten die Präsentation für den Abiball.</p>
+    </div>
+  </div>
+ </section>
  <section class="login">
   <form class="card" id="loginForm">
-    <h2>Verwaltung <span class="it">Login.</span></h2>
+    <h2>Anmelden</h2>
     <div class="msg error" id="loginErr" hidden></div>
     <div class="field">
-      <label class="mono" for="email">E-Mail</label>
+      <label for="email">E-Mail</label>
       <input type="email" id="email" autocomplete="username" required>
     </div>
     <div class="field">
-      <label class="mono" for="pw">Passwort</label>
+      <label for="pw">Passwort</label>
       <input type="password" id="pw" autocomplete="current-password" required>
     </div>
     <button class="btn primary block" id="loginBtn"><span>Anmelden</span><span class="arrow">→</span></button>
@@ -40,7 +47,7 @@
 
 <section class="login" id="noAdminView" hidden style="margin-top:12vh">
   <div class="card">
-    <h2 style="margin-bottom:12px">Kein <span class="it">Zugriff.</span></h2>
+    <h2 style="margin-bottom:12px">Kein Zugriff</h2>
     <p>Dieses Konto ist nicht als Verwaltung freigeschaltet.</p>
     <button class="btn" data-logout>Abmelden</button>
   </div>
@@ -51,8 +58,7 @@
   <header class="admin-top">
     <div class="inner">
       <div class="brand">
-        <span class="mark">ABI <span class="yr">’27</span></span>
-        <span class="t">Einschulung — Verwaltung</span>
+        <span class="badge-abi">ABI 27</span><span class="school"><b data-cfg="schoolName">CJD Sellin</b>Einschulungsfotos · Verwaltung</span>
       </div>
       <button class="btn primary" id="startShow">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.29-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg>
@@ -182,8 +188,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="config.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="config.js?v=5"></script>
+<script src="app.js?v=5"></script>
 <script>
 (function () {
   const { api, $, el, errorText, sortStudents, lastName, fillTexts, config } = window.Abi;
@@ -455,15 +461,17 @@
     // Folien bauen
     const show = el("div", { class: "show" });
     const slides = [];
+    const PIER = "<svg class=\"pier\" viewBox=\"0 0 440 170\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"70\" cy=\"46\" r=\"20\" opacity=\".55\"/><path d=\"M118 34l6 5 6-5M140 52l5 4 5-4\" opacity=\".7\"/><path d=\"M0 112h372\"/><path d=\"M0 118h372\" opacity=\".5\"/><path d=\"M12 118v26M40 118v26M68 118v26M96 118v26M124 118v26M152 118v26M180 118v26M208 118v26M236 118v26M264 118v26M292 118v26M320 118v26M348 118v26\"/><path d=\"M226 112V76h142v36\"/><path d=\"M218 76l79-30 79 30\"/><path d=\"M232 76V54h20v22M342 76V54h20v22\"/><path d=\"M228 54l14-16 14 16M338 54l14-16 14 16\"/><path d=\"M297 46v-12\"/><path d=\"M242 88h12v12h-12zM270 88h12v12h-12zM312 88h12v12h-12zM340 88h12v12h-12z\" opacity=\".8\"/><path d=\"M290 112V92h14v20\"/><path d=\"M0 152c20-6 40-6 60 0s40 6 60 0 40-6 60 0 40 6 60 0 40-6 60 0 40 6 60 0 40-6 60 0\" opacity=\".6\"/><path d=\"M30 164c20-5 40-5 60 0s40 5 60 0 40-5 60 0 40 5 60 0 40-5 60 0 40 5 60 0\" opacity=\".35\"/></svg>";
     function textSlide(heading, sub, italic) {
-      const node = el("div", { class: "slide text" }, el("div", { class: "title-slide" },
-        el("div", { class: "giant" }, "ABI", el("span", { class: "yr", text: "’" + (config.abiYear || "27") })),
-        el("div", { class: "line" },
-          el("h2", {}, heading, italic ? el("span", { class: "it", text: italic }) : null),
-          sub ? el("p", { text: sub }) : null)));
+      const ts = el("div", { class: "title-slide" },
+        el("span", { class: "badge-abi", text: "ABI " + (config.abiYear || "27") }),
+        el("h2", {}, heading, italic ? el("span", { class: "it", text: italic }) : null),
+        sub ? el("p", { text: sub }) : null);
+      ts.insertAdjacentHTML("beforeend", PIER);
+      const node = el("div", { class: "slide text" }, ts);
       return { kind: "text", node };
     }
-    if (settings.title.trim()) slides.push(textSlide(settings.title, settings.sub.trim(), "Wie alles anfing."));
+    if (settings.title.trim()) slides.push(textSlide(settings.title, settings.sub.trim(), "Wie alles anfing"));
     const photos = items.filter(Boolean);
     const pad = (n) => String(n).padStart(2, "0");
     photos.forEach((it, k) => {
@@ -473,9 +481,9 @@
         el("div", { class: "idx" }, el("b", { text: pad(k + 1) }), " / " + pad(photos.length)));
       slides.push({ kind: "photo", node, cap });
     });
-    if (settings.end.trim()) slides.push(textSlide(settings.end, config.schoolName || "", "Geschafft."));
+    if (settings.end.trim()) slides.push(textSlide(settings.end, (config.schoolName || "") + " · Ostseebad Sellin", ""));
     show.append(el("div", { class: "chrome" },
-      el("span", { text: "ABI ’" + (config.abiYear || "27") + " — " + (config.schoolName || "") }),
+      el("span", { text: "ABI " + (config.abiYear || "27") + " · " + (config.schoolName || "") }),
       el("span", { text: "Einschulungsfotos" })));
     slides.forEach((s) => show.append(s.node));
 

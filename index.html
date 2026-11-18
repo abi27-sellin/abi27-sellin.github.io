@@ -7,31 +7,28 @@
 <title>ABI 27 — Einschulungsfotos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
-<meta name="theme-color" content="#f3f1ec">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=5">
+<meta name="theme-color" content="#08445f">
 </head>
 <body>
 <div class="demo-banner" hidden><b>Demo-Modus:</b> Noch nicht mit der Cloud verbunden – Fotos werden nur in diesem Browser gespeichert.</div>
 
 <header class="topbar">
-  <span class="mark">ABI<sup>’27</sup></span>
-  <span class="meta">
-    <span data-cfg="schoolName">CJD Sellin</span>
-    <span data-cfg="eventName">Abiball 2027</span>
-    <span>Einschulung — Archiv</span>
-  </span>
+  <span class="brand"><span class="badge-abi">ABI 27</span><span class="school"><b data-cfg="schoolName">CJD Sellin</b>Ostseebad Sellin · Rügen</span></span>
+  <span class="meta" data-cfg="eventName">Abiball 2027</span>
 </header>
 
 <section class="hero">
-  <div class="giant" aria-label="Abi 27">ABI<span class="apo">’</span><span class="yr" data-cfg="abiYear">27</span></div>
-  <div class="row">
-    <h1>Der erste Schultag.<span class="it">Wie alles anfing.</span></h1>
-    <div class="intro">
-      <span class="mono">(01) — Worum es geht</span>
-      <p>Schultüte, Ranzen, erster Schultag: 12 Jahre später sammeln wir von jedem Kind ein Einschulungsfoto. Am Abend des <span data-cfg="eventName">Abiballs</span> zeigen wir alle zusammen als Überraschung.</p>
+  <div class="sun"></div>
+  <div class="inner">
+    <div>
+      <span class="kicker">Abiball 2027 · Einschulungsfotos</span>
+      <h1>Wie alles anfing: <span>unser erster Schultag.</span></h1>
+      <p>Liebe Eltern, zum <span data-cfg="eventName">Abiball</span> zeigen wir eine Überraschungs-Präsentation mit den Einschulungsfotos aller Abiturientinnen und Abiturienten. Dafür brauchen wir Ihre Hilfe: ein Foto vom ersten Schultag Ihres Kindes.</p>
       <p data-cfg-wrap="deadline">Bitte bis zum <b data-cfg="deadline"></b> hochladen.</p>
     </div>
+    <svg class="pier" viewBox="0 0 440 170" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="70" cy="46" r="20" opacity=".55"/><path d="M118 34l6 5 6-5M140 52l5 4 5-4" opacity=".7"/><path d="M0 112h372"/><path d="M0 118h372" opacity=".5"/><path d="M12 118v26M40 118v26M68 118v26M96 118v26M124 118v26M152 118v26M180 118v26M208 118v26M236 118v26M264 118v26M292 118v26M320 118v26M348 118v26"/><path d="M226 112V76h142v36"/><path d="M218 76l79-30 79 30"/><path d="M232 76V54h20v22M342 76V54h20v22"/><path d="M228 54l14-16 14 16M338 54l14-16 14 16"/><path d="M297 46v-12"/><path d="M242 88h12v12h-12zM270 88h12v12h-12zM312 88h12v12h-12zM340 88h12v12h-12z" opacity=".8"/><path d="M290 112V92h14v20"/><path d="M0 152c20-6 40-6 60 0s40 6 60 0 40-6 60 0 40 6 60 0 40-6 60 0 40 6 60 0 40-6 60 0" opacity=".6"/><path d="M30 164c20-5 40-5 60 0s40 5 60 0 40-5 60 0 40 5 60 0 40-5 60 0 40 5 60 0" opacity=".35"/></svg>
   </div>
 </section>
 
@@ -39,8 +36,8 @@
   <div class="formgrid">
     <aside>
       <div class="sticky">
-        <span class="mono blue">(02) — Upload</span>
-        <h2 style="margin-top:10px">Ein Foto, <span class="it">vier Schritte.</span></h2>
+        <span class="kicker">So funktioniert’s</span>
+        <h2>Ein Foto in vier Schritten</h2>
         <p>Dauert keine Minute. Ein abfotografiertes Papierfoto geht auch, am besten gerade von oben und ohne Spiegelung.</p>
         <div class="lock">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
@@ -72,10 +69,10 @@
                 <div id="dropEmpty">
                   <div class="plus">+</div>
                   <div class="big">Foto auswählen</div>
-                  <p class="hint">oder hierher ziehen · JPG · PNG · iPhone</p>
+                  <p class="hint">oder hierher ziehen · JPG, PNG oder iPhone-Foto</p>
                 </div>
                 <div id="dropFull" hidden>
-                  <span class="frame"><img class="preview" id="preview" alt="Vorschau"><span class="fcap" id="pcap">Nº — Erster Schultag</span></span>
+                  <span class="frame"><img class="preview" id="preview" alt="Vorschau"><span class="fcap" id="pcap">Erster Schultag</span></span>
                   <div class="change" style="margin-top:14px">Anderes Foto wählen</div>
                 </div>
               </label>
@@ -109,25 +106,25 @@
 
       <section class="card" id="doneCard" hidden>
         <div class="done">
-          <span class="mono">(✓) — Angekommen</span>
-          <h2 class="it">Danke.</h2>
-          <p>Das Foto von <b id="doneName"></b> ist sicher angekommen. Wir sehen uns beim Abiball.</p>
-          <button class="btn" id="again">Noch ein Foto hochladen →</button>
+          <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <h2>Vielen Dank!</h2>
+          <p>Das Foto von <b id="doneName"></b> ist angekommen. Wir freuen uns auf den Abiball!</p>
+          <button class="btn" id="again">Noch ein Foto hochladen</button>
         </div>
       </section>
     </div>
   </div>
 
   <footer class="foot">
-    <span>ABI ’27 — <span data-cfg="schoolName">CJD Sellin</span></span>
-    <span data-cfg-wrap="contactName">Fragen: <span data-cfg="contactName"></span></span>
+    <span><b>ABI 27</b> · <span data-cfg="schoolName">CJD Sellin</span></span>
+    <span data-cfg-wrap="contactName">Fragen? <span data-cfg="contactName"></span></span>
     <span>Ostseebad Sellin · Rügen</span>
   </footer>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
-<script src="config.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="config.js?v=5"></script>
+<script src="app.js?v=5"></script>
 <script>
 (function () {
   const { api, $, el, errorText, sortStudents, fillTexts } = window.Abi;
@@ -155,7 +152,7 @@
 
   function updateCaption() {
     const name = sel.value ? sel.options[sel.selectedIndex].text : "Erster Schultag";
-    $("#pcap").textContent = "Nº — " + name;
+    $("#pcap").textContent = name;
   }
   sel.addEventListener("change", updateCaption);
 
