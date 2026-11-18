@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Einschulungsfotos – Verwaltung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<meta name="theme-color" content="#0a2540">
+</head>
+<body>
+<div class="demo-banner" hidden><b>Demo-Modus:</b> Noch nicht mit der Cloud verbunden – beliebige Login-Daten funktionieren, alles bleibt in diesem Browser.</div>
+
+<!-- Login -->
+<div class="login-page" id="loginView" hidden>
+ <header class="sea">
+  <div class="inner">
+    <span class="lockup"><span class="abi">ABI</span><span class="yr" data-cfg="abiYear">27</span></span>
+    <p><span data-cfg="title">Unsere Einschulungsfotos</span> · Verwaltung</p>
+  </div>
+  <svg class="waves" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path style="fill:rgba(255,255,255,.10)" d="M0,38 C240,78 480,0 720,30 C960,60 1200,8 1440,38 L1440,90 L0,90Z"/>
+    <path style="fill:rgba(255,255,255,.16)" d="M0,58 C300,28 520,84 780,54 C1040,24 1240,70 1440,50 L1440,90 L0,90Z"/>
+    <path style="fill:var(--bg)" d="M0,74 C260,54 520,94 760,71 C1000,49 1240,84 1440,67 L1440,90 L0,90Z"/>
+  </svg>
+ </header>
+ <section class="login">
+  <form class="card" id="loginForm">
+    <div class="msg error" id="loginErr" hidden></div>
+    <div class="field">
+      <label for="email">E-Mail</label>
+      <input type="email" id="email" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="pw">Passwort</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+    </div>
+    <button class="btn primary block" id="loginBtn">Anmelden</button>
+  </form>
+ </section>
+</div>
+
+<section class="login" id="noAdminView" hidden style="margin-top:12vh">
+  <div class="card">
+    <h2 style="margin-bottom:8px">Kein Zugriff</h2>
+    <p>Dieses Konto ist nicht als Verwaltung freigeschaltet.</p>
+    <button class="btn" data-logout>Abmelden</button>
+  </div>
+</section>
+
+<!-- Verwaltung -->
+<div id="appView" hidden>
+  <header class="admin-top">
+    <div class="inner">
+      <div class="brand">
+        <span class="lockup"><span class="abi">ABI</span><span class="yr" data-cfg="abiYear">27</span></span>
+        <span class="t" data-cfg="title">Unsere Einschulungsfotos</span>
+      </div>
+      <button class="btn primary" id="startShow">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.29-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg>
+        Präsentation starten
+      </button>
+      <button class="btn" id="copyLink">Eltern-Link kopieren</button>
+      <button class="btn" data-logout>Abmelden</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="stats">
+      <div class="stat"><div class="n" id="stDone">0</div><div class="t" id="stDoneT">Kinder mit Foto</div><div class="bar"><i id="stBar" style="width:0"></i></div></div>
+      <div class="stat"><div class="n" id="stMissing">0</div><div class="t">fehlen noch</div></div>
+      <div class="stat"><div class="n" id="stSubs">0</div><div class="t">Fotos insgesamt hochgeladen</div></div>
+    </div>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="photos">Fotos</button>
+      <button class="tab" data-tab="names">Namensliste</button>
+      <button class="tab" data-tab="show">Präsentation &amp; Sicherung</button>
+    </nav>
+
+    <!-- Tab: Fotos -->
+    <section data-panel="photos">
+      <div class="toolbar">
+        <input type="text" id="search" placeholder="Name suchen …">
+        <div class="seg" id="filter">
+          <button data-f="all" class="on">Alle</button>
+          <button data-f="with">Mit Foto</button>
+          <button data-f="without">Ohne Foto</button>
+        </div>
+        <button class="btn small" id="copyMissing">Fehlende Namen kopieren</button>
+        <button class="btn small" id="reload">Aktualisieren</button>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <!-- Tab: Namen -->
+    <section data-panel="names" hidden>
+      <div class="names-layout">
+        <div class="card">
+          <h3 style="margin-bottom:10px">Namen hinzufügen</h3>
+          <p class="hint" style="margin-top:0">Ein Name pro Zeile, z. B. „Anna Becker“. Man kann die ganze Liste auf einmal einfügen.</p>
+          <textarea id="newNames" rows="10" placeholder="Anna Becker&#10;Ben Schulz&#10;…"></textarea>
+          <button class="btn primary" id="addNames" style="margin-top:10px">Hinzufügen</button>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:10px">Alle Namen (<span id="nameCount">0</span>)</h3>
+          <ul class="namelist" id="nameList"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab: Präsentation -->
+    <section data-panel="show" hidden>
+      <div class="settings">
+        <div class="card">
+          <h3 style="margin-bottom:14px">Präsentation</h3>
+          <div class="field">
+            <label for="sOrder">Reihenfolge</label>
+            <select id="sOrder">
+              <option value="last">Alphabetisch nach Nachname</option>
+              <option value="first">Alphabetisch nach Vorname</option>
+              <option value="random">Zufällig</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sNames">Namen anzeigen</label>
+            <select id="sNames">
+              <option value="always">Immer unter dem Foto</option>
+              <option value="reveal">Ratespiel: erst Foto, Name per Tastendruck</option>
+              <option value="never">Gar nicht</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sInterval">Automatisch weiter nach … Sekunden</label>
+            <input type="number" id="sInterval" min="0" max="120" step="1">
+            <div class="hint">0 = nur per Tastendruck / Klick / Presenter weiterschalten.</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:14px">Start- und Schlussfolie</h3>
+          <div class="field">
+            <label for="sTitle">Überschrift Startfolie <span class="optional">(leer = keine Startfolie)</span></label>
+            <input type="text" id="sTitle">
+          </div>
+          <div class="field">
+            <label for="sSub">Untertitel Startfolie</label>
+            <input type="text" id="sSub">
+          </div>
+          <div class="field">
+            <label for="sEnd">Text Schlussfolie <span class="optional">(leer = keine)</span></label>
+            <input type="text" id="sEnd">
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:10px">Bedienung</h3>
+          <p class="hint" style="margin:0 0 6px">→ / Leertaste / Klick: weiter · ←: zurück<br>N: Namen ein/aus · P: Pause · Esc: beenden</p>
+          <p class="hint" style="margin:0 0 14px">Vor dem Start werden alle Fotos vorgeladen. Danach läuft die Präsentation auch, wenn das WLAN im Saal ausfällt.</p>
+          <button class="btn primary" id="startShow2">Präsentation starten</button>
+          <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+          <h3 style="margin-bottom:10px">Sicherung</h3>
+          <p class="hint" style="margin:0 0 12px">Alle Fotos als ZIP-Datei herunterladen – benannt nach den Kindern. Gut als Notfall-Kopie für den Abend.</p>
+          <button class="btn" id="zipBtn">Alle Fotos als ZIP herunterladen</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Detail-Dialog -->
+<div class="modal" id="modal" hidden>
+  <div class="box">
+    <div class="head">
+      <h2 id="mName"></h2>
+      <label class="btn small">
+        Foto hinzufügen
+        <input type="file" id="mUpload" accept="image/*" hidden>
+      </label>
+      <button class="btn small" id="mClose">Schließen</button>
+    </div>
+    <p class="hint" id="mHint" style="margin:-6px 0 14px"></p>
+    <div class="subs" id="mSubs"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  const { api, $, el, errorText, sortStudents, lastName, fillTexts, config } = window.Abi;
+  fillTexts();
+
+  let students = [], subs = [], urls = {};
+  let filter = "all", openStudentId = null;
+
+  // ---------- kleine Helfer ----------
+  function toast(m) {
+    const t = el("div", { class: "toast", text: m });
+    document.body.append(t);
+    setTimeout(() => t.remove(), 2600);
+  }
+  function views(name) {
+    ["loginView", "noAdminView", "appView"].forEach((v) => ($("#" + v).hidden = v !== name));
+  }
+  const subsOf = (id) => subs.filter((s) => s.student_id === id);
+  function bestSub(id) {
+    const list = subsOf(id);
+    return list.find((s) => s.chosen) || list[list.length - 1] || null;
+  }
+  function fmtDate(iso) {
+    return new Date(iso).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  }
+  async function copy(text, msg) {
+    try { await navigator.clipboard.writeText(text); toast(msg); }
+    catch (_) { prompt("Zum Kopieren markieren:", text); }
+  }
+  function parentUrl() { return new URL("./", location.href).href; }
+  function safeName(n) { return n.normalize("NFC").replace(/[\\/:*?"<>|]+/g, "").replace(/\s+/g, "_"); }
+
+  // ---------- Anmeldung ----------
+  async function boot() {
+    try {
+      const s = await api.session();
+      if (!s) return views("loginView");
+      if (!(await api.isAdmin())) return views("noAdminView");
+      views("appView");
+      await refresh();
+    } catch (e) {
+      views("loginView");
+      showLoginErr(errorText(e));
+    }
+  }
+  function showLoginErr(m) { const n = $("#loginErr"); n.textContent = m; n.hidden = !m; }
+  $("#loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const b = $("#loginBtn"); b.disabled = true; showLoginErr("");
+    try { await api.signIn($("#email").value.trim(), $("#pw").value); await boot(); }
+    catch (ex) { showLoginErr(errorText(ex)); }
+    finally { b.disabled = false; }
+  });
+  document.querySelectorAll("[data-logout]").forEach((b) =>
+    b.addEventListener("click", async () => { await api.signOut(); location.reload(); }));
+
+  // ---------- Daten laden ----------
+  async function refresh() {
+    try {
+      [students, subs] = await Promise.all([api.listStudents(), api.listSubmissions()]);
+      urls = await api.signUrls(subs.map((s) => s.thumb_path || s.path));
+      render();
+    } catch (e) { toast("Fehler beim Laden: " + errorText(e)); }
+  }
+  $("#reload").addEventListener("click", refresh);
+
+  function render() {
+    const withPhoto = students.filter((s) => subsOf(s.id).length);
+    $("#stDone").textContent = withPhoto.length;
+    $("#stDoneT").textContent = `von ${students.length} Kindern haben ein Foto`;
+    $("#stMissing").textContent = students.length - withPhoto.length;
+    $("#stSubs").textContent = subs.length;
+    $("#stBar").style.width = students.length ? (withPhoto.length / students.length * 100) + "%" : "0";
+    renderGrid(); renderNames();
+    if (openStudentId != null) openModal(openStudentId);
+  }
+
+  function renderGrid() {
+    const q = $("#search").value.trim().toLowerCase();
+    const grid = $("#grid"); grid.replaceChildren();
+    sortStudents(students, "last").forEach((st) => {
+      const list = subsOf(st.id), best = bestSub(st.id);
+      if (filter === "with" && !list.length) return;
+      if (filter === "without" && list.length) return;
+      if (q && !st.name.toLowerCase().includes(q)) return;
+      const src = best && urls[best.thumb_path || best.path];
+      const ph = el("div", { class: "ph", onclick: () => openModal(st.id) },
+        src ? el("img", { src, alt: st.name, loading: "lazy" }) : (best ? "Vorschau nicht möglich" : "Noch kein Foto"),
+        list.length > 1 ? el("span", { class: "count", text: list.length + " Fotos" }) : null);
+      grid.append(el("div", { class: "kid" }, ph,
+        el("div", { class: "body" },
+          el("div", { class: "name", text: st.name }),
+          list.length ? el("span", { class: "badge ok", text: list.length > 1 && !list.some((s) => s.chosen) ? "Foto da · bitte auswählen" : "Foto da" })
+                      : el("span", { class: "badge miss", text: "fehlt noch" }),
+          el("div", { class: "row" }, el("button", { class: "btn small", text: list.length ? "Ansehen" : "Foto hinzufügen", onclick: () => openModal(st.id) })))));
+    });
+    if (!grid.children.length) grid.append(el("p", { class: "hint", text: students.length ? "Keine Treffer." : "Noch keine Namen eingetragen – bitte unter „Namensliste“ hinzufügen." }));
+  }
+  $("#search").addEventListener("input", renderGrid);
+  $("#filter").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    filter = b.dataset.f;
+    $("#filter").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
+    renderGrid();
+  });
+  $("#copyMissing").addEventListener("click", () => {
+    const miss = sortStudents(students, "last").filter((s) => !subsOf(s.id).length).map((s) => s.name);
+    if (!miss.length) return toast("Es fehlt niemand mehr 🎉");
+    copy(miss.join("\n"), `${miss.length} fehlende Namen kopiert`);
+  });
+  $("#copyLink").addEventListener("click", () => copy(parentUrl(), "Link für die Eltern kopiert"));
+
+  // ---------- Detail-Dialog ----------
+  async function openModal(id) {
+    const st = students.find((s) => s.id === id);
+    if (!st) { closeModal(); return; }
+    openStudentId = id;
+    $("#mName").textContent = st.name;
+    const list = subsOf(id);
+    $("#mHint").textContent = list.length > 1 ? "Mehrere Fotos – mit „Für Präsentation verwenden“ eins auswählen." : "";
+    const box = $("#mSubs"); box.replaceChildren();
+    if (!list.length) box.append(el("p", { class: "hint", text: "Noch kein Foto. Über „Foto hinzufügen“ kann man selbst eins hochladen (z. B. per WhatsApp erhalten)." }));
+    const full = await api.signUrls(list.map((s) => s.path));
+    const best = bestSub(id);
+    list.forEach((s) => {
+      const src = full[s.path];
+      box.append(el("div", { class: "sub" + (s === best && list.length > 1 ? " chosen" : "") },
+        src ? el("img", { src, alt: st.name }) : el("div", { class: "hint", style: "padding:20px", text: "Vorschau nicht möglich (Format)." }),
+        el("div", { class: "meta" },
+          el("div", {}, "Hochgeladen: ", el("b", { text: fmtDate(s.created_at) })),
+          s.parent_name ? el("div", {}, "Von: ", el("b", { text: s.parent_name })) : null,
+          s.note ? el("div", {}, "Nachricht: ", el("b", { text: s.note })) : null),
+        el("div", { class: "row" },
+          list.length > 1 && s !== best ? el("button", { class: "btn small", text: "Für Präsentation verwenden", onclick: async () => {
+            try { await api.setChosen(s); await refresh(); } catch (e) { toast(errorText(e)); } } }) : null,
+          list.length > 1 && s === best ? el("span", { class: "badge ok", text: "wird gezeigt" }) : null,
+          src ? el("a", { class: "btn small", href: src, download: safeName(st.name) + "." + s.path.split(".").pop(), target: "_blank", rel: "noopener", text: "Herunterladen" }) : null,
+          el("button", { class: "btn small danger", text: "Löschen", onclick: async () => {
+            if (!confirm(`Dieses Foto von ${st.name} wirklich löschen? Das kann nicht rückgängig gemacht werden.`)) return;
+            try { await api.deleteSubmission(s); await refresh(); toast("Foto gelöscht"); } catch (e) { toast(errorText(e)); } } }))));
+    });
+    $("#modal").hidden = false;
+  }
+  function closeModal() { $("#modal").hidden = true; openStudentId = null; }
+  $("#mClose").addEventListener("click", closeModal);
+  $("#modal").addEventListener("click", (e) => { if (e.target.id === "modal") closeModal(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#modal").hidden) closeModal(); });
+  $("#mUpload").addEventListener("change", async (e) => {
+    const f = e.target.files[0]; e.target.value = "";
+    if (!f || openStudentId == null) return;
+    toast("Foto wird hochgeladen …");
+    try { await api.submit({ studentId: openStudentId, file: f, parentName: "(Verwaltung)" }); await refresh(); toast("Foto hinzugefügt"); }
+    catch (ex) { toast("Fehler: " + errorText(ex)); }
+  });
+
+  // ---------- Namensliste ----------
+  function renderNames() {
+    $("#nameCount").textContent = students.length;
+    const ul = $("#nameList"); ul.replaceChildren();
+    sortStudents(students, "last").forEach((st) => {
+      const n = subsOf(st.id).length;
+      ul.append(el("li", {},
+        el("span", { text: st.name }),
+        n ? el("span", { class: "badge ok", style: "flex:none", text: n + " Foto" + (n > 1 ? "s" : "") }) : null,
+        el("button", { class: "btn small", text: "Ändern", onclick: async () => {
+          const name = prompt("Neuer Name:", st.name);
+          if (!name || !name.trim() || name.trim() === st.name) return;
+          try { await api.renameStudent(st.id, name.trim()); await refresh(); } catch (e) { toast(errorText(e)); } } }),
+        el("button", { class: "btn small danger", text: "Entfernen", onclick: async () => {
+          const msg = n ? `${st.name} und ${n} hochgeladene(s) Foto(s) wirklich löschen? Das kann nicht rückgängig gemacht werden.` : `${st.name} aus der Liste entfernen?`;
+          if (!confirm(msg)) return;
+          try { await api.deleteStudent(st.id, subsOf(st.id)); await refresh(); } catch (e) { toast(errorText(e)); } } })));
+    });
+  }
+  $("#addNames").addEventListener("click", async () => {
+    const existing = new Set(students.map((s) => s.name.toLowerCase()));
+    const names = [...new Set($("#newNames").value.split(/\r?\n/).map((s) => s.replace(/\s+/g, " ").trim()).filter(Boolean))]
+      .filter((n) => !existing.has(n.toLowerCase()));
+    if (!names.length) return toast("Keine neuen Namen gefunden");
+    try { await api.addStudents(names); $("#newNames").value = ""; await refresh(); toast(`${names.length} Name(n) hinzugefügt`); }
+    catch (e) { toast(errorText(e)); }
+  });
+
+  // ---------- Tabs ----------
+  document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x === t));
+    document.querySelectorAll("[data-panel]").forEach((p) => (p.hidden = p.dataset.panel !== t.dataset.tab));
+  }));
+
+  // ---------- Einstellungen ----------
+  const SKEY = "abi27_show_settings";
+  const defaults = { order: "last", names: "always", interval: 0, title: config.title || "Unsere Einschulungsfotos",
+    sub: [config.schoolName, config.eventName].filter(Boolean).join(" · "), end: "Alles Gute zum Abitur!" };
+  let settings = defaults;
+  try { settings = Object.assign({}, defaults, JSON.parse(localStorage.getItem(SKEY) || "{}")); } catch (_) {}
+  const sFields = { order: "#sOrder", names: "#sNames", interval: "#sInterval", title: "#sTitle", sub: "#sSub", end: "#sEnd" };
+  Object.entries(sFields).forEach(([k, sel]) => {
+    const n = $(sel); n.value = settings[k];
+    n.addEventListener("input", () => {
+      settings[k] = k === "interval" ? Math.max(0, Number(n.value) || 0) : n.value;
+      try { localStorage.setItem(SKEY, JSON.stringify(settings)); } catch (_) {}
+    });
+  });
+
+  // ---------- ZIP-Sicherung ----------
+  $("#zipBtn").addEventListener("click", async () => {
+    if (!subs.length) return toast("Noch keine Fotos vorhanden");
+    if (!window.JSZip) return toast("ZIP-Funktion konnte nicht geladen werden");
+    const b = $("#zipBtn"); b.disabled = true;
+    try {
+      const zip = new JSZip();
+      const full = await api.signUrls(subs.map((s) => s.path));
+      let i = 0;
+      for (const st of sortStudents(students, "last")) {
+        const list = subsOf(st.id); const best = bestSub(st.id);
+        const ordered = best ? [best, ...list.filter((s) => s !== best)] : [];
+        for (let k = 0; k < ordered.length; k++) {
+          const s = ordered[k];
+          b.textContent = `Lade ${++i} / ${subs.length} …`;
+          const blob = await (await fetch(full[s.path])).blob();
+          const ext = s.path.split(".").pop();
+          zip.file(`${safeName(st.name)}${k ? "_weiteres-" + k : ""}.${ext}`, blob);
+        }
+      }
+      b.textContent = "ZIP wird erstellt …";
+      const out = await zip.generateAsync({ type: "blob" });
+      const a = el("a", { href: URL.createObjectURL(out), download: "Einschulungsfotos.zip" });
+      document.body.append(a); a.click(); a.remove();
+    } catch (e) { toast("Fehler: " + errorText(e)); }
+    finally { b.disabled = false; b.textContent = "Alle Fotos als ZIP herunterladen"; }
+  });
+
+  // ============================================================
+  //  Präsentation
+  // ============================================================
+  async function startShow() {
+    const ordered = sortStudents(students.filter((s) => bestSub(s.id)), settings.order);
+    if (!ordered.length) return toast("Noch keine Fotos vorhanden");
+
+    // Vollbild sofort anfordern (muss direkt auf den Klick folgen)
+    const root = document.documentElement;
+    let wentFull = false;
+    try { if (root.requestFullscreen) { await root.requestFullscreen(); wentFull = true; } } catch (_) {}
+
+    // Alle Fotos vorladen
+    const loader = el("div", { class: "loading" }, el("div", { text: "Fotos werden geladen …" }), el("div", { class: "bar" }, el("i", { style: "width:0" })));
+    document.body.append(loader);
+    const bar = loader.querySelector("i");
+    const items = [];
+    try {
+      const full = await api.signUrls(ordered.map((s) => bestSub(s.id).path));
+      let done = 0;
+      await Promise.all(ordered.map(async (st, idx) => {
+        try {
+          const blob = await (await fetch(full[bestSub(st.id).path])).blob();
+          const url = URL.createObjectURL(blob);
+          await new Promise((res, rej) => { const im = new Image(); im.onload = res; im.onerror = rej; im.src = url; });
+          items[idx] = { name: st.name, url };
+        } catch (_) { items[idx] = null; }
+        bar.style.width = (++done / ordered.length * 100) + "%";
+      }));
+    } catch (e) {
+      loader.remove(); if (wentFull) document.exitFullscreen().catch(() => {});
+      return toast("Fotos konnten nicht geladen werden: " + errorText(e));
+    }
+    loader.remove();
+    const failed = items.filter((x) => !x).length;
+
+    // Folien bauen
+    const show = el("div", { class: "show" });
+    const slides = [];
+    function textSlide(heading, sub) {
+      const node = el("div", { class: "slide text" }, el("div", { class: "title-slide" },
+        el("span", { class: "lockup" }, el("span", { class: "abi", text: "ABI" }), el("span", { class: "yr", text: config.abiYear || "27" })),
+        el("h2", { text: heading }), sub ? el("p", { text: sub }) : null));
+      node.insertAdjacentHTML("beforeend",
+        '<svg class="waves" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">' +
+        '<path style="fill:rgba(255,255,255,.08)" d="M0,38 C240,78 480,0 720,30 C960,60 1200,8 1440,38 L1440,90 L0,90Z"/>' +
+        '<path style="fill:rgba(255,255,255,.12)" d="M0,58 C300,28 520,84 780,54 C1040,24 1240,70 1440,50 L1440,90 L0,90Z"/>' +
+        '<path style="fill:rgba(255,255,255,.16)" d="M0,74 C260,54 520,94 760,71 C1000,49 1240,84 1440,67 L1440,90 L0,90Z"/></svg>');
+      return { kind: "text", node };
+    }
+    if (settings.title.trim()) slides.push(textSlide(settings.title, settings.sub.trim()));
+    items.filter(Boolean).forEach((it) => {
+      const cap = el("div", { class: "cap", text: it.name });
+      const node = el("div", { class: "slide" + (settings.names === "never" ? " noname" : "") },
+        el("img", { src: it.url, alt: "" }), settings.names === "never" ? null : cap);
+      slides.push({ kind: "photo", node, cap });
+    });
+    if (settings.end.trim()) slides.push(textSlide(settings.end, config.schoolName || ""));
+    slides.forEach((s) => show.append(s.node));
+
+    const counter = el("span", { class: "k" });
+    const pauseBtn = el("button", { text: "Pause" });
+    const hud = el("div", { class: "hud" },
+      el("button", { text: "◀ Zurück", onclick: (e) => { e.stopPropagation(); prev(); } }),
+      el("button", { text: "Weiter ▶", onclick: (e) => { e.stopPropagation(); next(); } }),
+      pauseBtn,
+      el("button", { text: "Namen ein/aus", onclick: (e) => { e.stopPropagation(); toggleNames(); } }),
+      counter,
+      el("button", { text: "Beenden", onclick: (e) => { e.stopPropagation(); end(); } }));
+    pauseBtn.addEventListener("click", (e) => { e.stopPropagation(); togglePause(); });
+    show.append(hud);
+    document.body.append(show);
+    document.body.classList.add("showing");
+    if (failed) toast(`${failed} Foto(s) konnten nicht geladen werden und werden übersprungen`);
+
+    let i = 0, revealed = settings.names === "always", namesOn = settings.names !== "never";
+    let paused = false, timer = null, revealTimer = null, hudTimer = null;
+
+    function paint() {
+      slides.forEach((s, k) => s.node.classList.toggle("on", k === i));
+      const s = slides[i];
+      if (s.cap) s.cap.classList.toggle("hidden", !(namesOn && revealed));
+      const photoIdx = slides.slice(0, i + 1).filter((x) => x.kind === "photo").length;
+      const photoTotal = slides.filter((x) => x.kind === "photo").length;
+      counter.textContent = `${photoIdx} / ${photoTotal}`;
+      schedule();
+    }
+    function go(k) {
+      i = Math.max(0, Math.min(slides.length - 1, k));
+      revealed = settings.names === "always";
+      paint();
+    }
+    function next() {
+      const s = slides[i];
+      if (s.kind === "photo" && settings.names === "reveal" && namesOn && !revealed) { revealed = true; paint(); return; }
+      if (i < slides.length - 1) go(i + 1);
+    }
+    function prev() { go(i - 1); }
+    function toggleNames() { namesOn = !namesOn; if (namesOn) revealed = true; paint(); }
+    function togglePause() { paused = !paused; pauseBtn.textContent = paused ? "Fortsetzen" : "Pause"; schedule(); }
+    function schedule() {
+      clearTimeout(timer); clearTimeout(revealTimer);
+      const sec = Number(settings.interval) || 0;
+      if (!sec || paused || i >= slides.length - 1) return;
+      const s = slides[i];
+      if (s.kind === "photo" && settings.names === "reveal" && namesOn && !revealed) {
+        revealTimer = setTimeout(() => { revealed = true; paint(); }, sec * 500);
+        return;
+      }
+      timer = setTimeout(() => go(i + 1), sec * 1000);
+    }
+    function onKey(e) {
+      if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); next(); }
+      else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); prev(); }
+      else if (e.key === "n" || e.key === "N") toggleNames();
+      else if (e.key === "p" || e.key === "P" || e.key === "k") togglePause();
+      else if (e.key === "Home") go(0);
+      else if (e.key === "End") go(slides.length - 1);
+      else if (e.key === "Escape") end();
+    }
+    function onMove() {
+      show.classList.add("cursor");
+      clearTimeout(hudTimer);
+      hudTimer = setTimeout(() => show.classList.remove("cursor"), 2500);
+    }
+    function onFs() { if (wentFull && !document.fullscreenElement) end(); }
+    function end() {
+      clearTimeout(timer); clearTimeout(revealTimer); clearTimeout(hudTimer);
+      document.removeEventListener("keydown", onKey, true);
+      document.removeEventListener("fullscreenchange", onFs);
+      items.forEach((it) => it && URL.revokeObjectURL(it.url));
+      show.remove();
+      document.body.classList.remove("showing");
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    }
+    show.addEventListener("click", (e) => { if (!e.target.closest(".hud")) next(); });
+    show.addEventListener("mousemove", onMove);
+    document.addEventListener("keydown", onKey, true);
+    document.addEventListener("fullscreenchange", onFs);
+    // erste Folie sichtbar machen (nach einem Frame, damit die Überblendung greift)
+    requestAnimationFrame(() => paint());
+  }
+  $("#startShow").addEventListener("click", startShow);
+  $("#startShow2").addEventListener("click", startShow);
+
+  boot();
+})();
+</script>
+</body>
+</html>
