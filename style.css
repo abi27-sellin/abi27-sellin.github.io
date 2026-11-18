@@ -298,3 +298,126 @@ body.showing { overflow: hidden; }
 }
 .loading .bar { width: min(420px, 80vw); background: rgba(255,255,255,.2); }
 .loading .bar > i { background: var(--sky); }
+
+/* ============================================================
+   PARTY-MODUS: Schule geschafft!
+   ============================================================ */
+:root {
+  --sun: #ffd23f;
+  --sun-dark: #f2b705;
+  --coral: #ff7a8a;
+  --mint: #4fd1c5;
+  --hand: "Caveat", "Comic Sans MS", cursive;
+}
+
+/* Konfetti im Kopfbereich */
+.confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.confetti i {
+  position: absolute; top: -20px; display: block; border-radius: 2px; opacity: .9;
+  animation: confetti-fall linear infinite;
+}
+.confetti i.round { border-radius: 50%; }
+@keyframes confetti-fall {
+  0%   { transform: translate3d(0, -10vh, 0) rotate(0deg); }
+  100% { transform: translate3d(var(--drift, 30px), 110vh, 0) rotate(var(--spin, 540deg)); }
+}
+.confetti-burst { position: fixed; inset: 0; pointer-events: none; z-index: 400; overflow: hidden; }
+.confetti-burst i {
+  position: absolute; top: -20px; display: block; border-radius: 2px;
+  animation: confetti-fall linear forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .confetti i, .confetti-burst i { animation: none; display: none; }
+  .sticker { animation: none !important; }
+}
+
+/* Doktorhut-Icon neben ABI 27 */
+.cap-icon { width: 1.25em; height: 1.25em; vertical-align: -.2em; margin-right: .35em; color: #fff; }
+.lockup.dark .cap-icon { color: var(--ink); }
+
+/* Handschrift-Zeile & Sticker */
+.scribble {
+  font-family: var(--hand); font-weight: 700; color: var(--sun);
+  font-size: clamp(26px, 6vw, 36px); line-height: 1; margin-top: 6px; transform: rotate(-2deg);
+  display: inline-block;
+}
+.scribble svg { display: block; width: 100%; height: 10px; margin-top: 2px; }
+.sticker {
+  position: absolute; right: 16px; top: 104px; z-index: 2;
+  background: var(--sun); color: var(--deep); font-weight: 800; font-size: 14px; line-height: 1.15;
+  padding: 10px 14px; border-radius: 12px; text-align: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,.25); transform: rotate(8deg);
+  animation: wobble 4s ease-in-out infinite;
+}
+.sticker small { display: block; font-weight: 600; font-size: 12px; opacity: .8; }
+@keyframes wobble { 0%,100% { transform: rotate(8deg); } 50% { transform: rotate(4deg) scale(1.04); } }
+@media (max-width: 560px) { .sticker { top: 92px; right: 12px; font-size: 12px; padding: 8px 10px; } }
+.sea h1 { padding-right: 120px; }
+@media (max-width: 560px) { .sea h1 { padding-right: 84px; margin-top: 52px; } }
+
+/* Klebeband auf der Karte */
+.card.tape { position: relative; }
+.card.tape::before {
+  content: ""; position: absolute; top: -14px; left: 50%; width: 120px; height: 28px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(255, 210, 63, .75); border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  -webkit-mask: linear-gradient(90deg, transparent 0 4px, #000 4px calc(100% - 4px), transparent calc(100% - 4px));
+          mask: linear-gradient(90deg, transparent 0 4px, #000 4px calc(100% - 4px), transparent calc(100% - 4px));
+}
+
+/* Polaroid-Vorschau */
+.drop.has-file { background: #f7fafd; }
+.polaroid {
+  display: inline-block; background: #fff; padding: 10px 10px 34px; border-radius: 4px;
+  box-shadow: 0 10px 28px rgba(11,34,57,.18); transform: rotate(-2deg); position: relative;
+}
+.polaroid img.preview { border-radius: 2px; max-height: 320px; }
+.polaroid .pcap {
+  position: absolute; left: 0; right: 0; bottom: 6px; text-align: center;
+  font-family: var(--hand); font-size: 22px; font-weight: 700; color: var(--ink);
+}
+
+/* Sonnengelber Haupt-Button */
+.btn.primary.party {
+  background: var(--sun); border-color: var(--sun); color: var(--deep);
+  box-shadow: 0 4px 0 var(--sun-dark); transition: transform .08s, box-shadow .08s, background .15s;
+}
+.btn.primary.party:hover { background: #ffdb5c; border-color: #ffdb5c; transform: translateY(-1px); box-shadow: 0 5px 0 var(--sun-dark); }
+.btn.primary.party:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--sun-dark); }
+.btn.primary.party .spinner { border-color: rgba(10,37,64,.25); border-top-color: var(--deep); }
+
+/* Erfolg */
+.done .party-emoji { font-size: 56px; line-height: 1; margin-bottom: 10px; display: block; animation: pop .6s cubic-bezier(.2,1.6,.4,1) both; }
+@keyframes pop { from { transform: scale(.3) rotate(-20deg); opacity: 0; } to { transform: none; opacity: 1; } }
+.done h2 .hand { font-family: var(--hand); color: var(--blue); font-size: 1.25em; }
+
+/* Kleine Doodles am Seitenrand */
+.doodles { position: relative; max-width: 620px; margin: 0 auto; }
+.doodle { position: absolute; color: #b9cde0; pointer-events: none; }
+@media (max-width: 760px) { .doodle { display: none; } }
+
+/* ---------- Verwaltung: etwas Party ---------- */
+.admin-top { position: relative; overflow: hidden; }
+.admin-top .inner { position: relative; z-index: 1; }
+.kid .ph img { transition: transform .25s; }
+.kid:hover .ph img { transform: scale(1.04); }
+.badge.ok { background: #fff4c2; color: #7a5a00; }
+.bar > i { background: linear-gradient(90deg, var(--blue), var(--mint)); }
+
+/* ---------- Präsentation: Polaroids ---------- */
+.show .slide .pol {
+  background: #fff; padding: 1.4vh 1.4vh 0; border-radius: 4px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6); transform: rotate(var(--rot, -1.5deg));
+  display: flex; flex-direction: column; align-items: center; max-width: 90vw;
+}
+.show .slide .pol img { max-width: 84vw; max-height: 72vh; box-shadow: none; border-radius: 2px; }
+.show .slide.noname .pol img { max-height: 82vh; }
+.show .slide .pol .cap {
+  font-family: var(--hand); color: var(--ink); font-weight: 700;
+  font-size: clamp(32px, 6.5vh, 76px); margin: .6vh 0 1vh; min-height: 1.15em; letter-spacing: 0;
+}
+.show .slide.noname .pol { padding-bottom: 6vh; }
+.show .title-slide .scribble { font-size: clamp(30px, 6vh, 70px); margin-top: 2vh; }
+.show .title-slide .cap-icon { width: 1.1em; height: 1.1em; }
+.show .slide.text .confetti { z-index: 0; }

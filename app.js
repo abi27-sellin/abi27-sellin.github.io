@@ -266,9 +266,52 @@
     if (DEMO) document.querySelectorAll(".demo-banner").forEach((n) => (n.hidden = false));
   }
 
+  // ---------- Konfetti ----------
+  const COLORS = ["#ffd23f", "#ff7a8a", "#4fd1c5", "#8fd3f4", "#ffffff"];
+  const reduced = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function confettiPiece(burst) {
+    const i = document.createElement("i");
+    const w = 6 + Math.random() * 7;
+    i.style.left = Math.random() * 100 + "%";
+    i.style.width = w + "px";
+    i.style.height = (Math.random() < .35 ? w : w * (1.6 + Math.random())) + "px";
+    i.style.background = COLORS[(Math.random() * COLORS.length) | 0];
+    i.style.setProperty("--drift", (Math.random() * 160 - 80) + "px");
+    i.style.setProperty("--spin", (Math.random() * 900 - 450) + "deg");
+    if (Math.random() < .3) i.className = "round";
+    const dur = burst ? 2.2 + Math.random() * 2 : 7 + Math.random() * 9;
+    i.style.animationDuration = dur + "s";
+    i.style.animationDelay = (burst ? Math.random() * .6 : -Math.random() * dur) + "s";
+    return i;
+  }
+  // Dauerhaftes, sanftes Konfetti in einem Container
+  function confetti(container, count = 36) {
+    if (!container || reduced()) return;
+    const box = document.createElement("div");
+    box.className = "confetti"; box.setAttribute("aria-hidden", "true");
+    for (let k = 0; k < count; k++) box.append(confettiPiece(false));
+    container.prepend(box);
+  }
+  // Einmaliger Konfetti-Regen über die ganze Seite
+  function confettiBurst(count = 140) {
+    if (reduced()) return;
+    const box = document.createElement("div");
+    box.className = "confetti-burst"; box.setAttribute("aria-hidden", "true");
+    for (let k = 0; k < count; k++) box.append(confettiPiece(true));
+    document.body.append(box);
+    setTimeout(() => box.remove(), 5000);
+  }
+  const CAP_SVG = '<svg class="cap-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 8 2 22l30 14 30-14z" fill="currentColor"/><path d="M14 29v11c0 5 8 10 18 10s18-5 18-10V29L32 37z" fill="currentColor" opacity=".8"/><path d="M57 25v15" stroke="#ffd23f" stroke-width="3" stroke-linecap="round"/><circle cx="57" cy="43" r="4" fill="#ffd23f"/></svg>';
+  function addCaps() {
+    document.querySelectorAll(".lockup:not([data-nocap])").forEach((l) => {
+      if (!l.querySelector(".cap-icon")) l.insertAdjacentHTML("afterbegin", CAP_SVG);
+    });
+  }
+
   window.Abi = {
     config: C, demo: DEMO,
     api: DEMO ? demoApi() : supabaseApi(),
     sortStudents, lastName, $, el, errorText, fillTexts,
+    confetti, confettiBurst, addCaps, CAP_SVG,
   };
 })();

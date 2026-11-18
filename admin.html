@@ -7,7 +7,7 @@
 <title>Einschulungsfotos – Verwaltung</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <meta name="theme-color" content="#0a2540">
 </head>
@@ -193,6 +193,9 @@
 (function () {
   const { api, $, el, errorText, sortStudents, lastName, fillTexts, config } = window.Abi;
   fillTexts();
+  Abi.addCaps();
+  Abi.confetti(document.querySelector(".login-page .sea"), 30);
+  Abi.confetti(document.querySelector(".admin-top"), 18);
 
   let students = [], subs = [], urls = {};
   let filter = "all", openStudentId = null;
@@ -460,10 +463,14 @@
     // Folien bauen
     const show = el("div", { class: "show" });
     const slides = [];
-    function textSlide(heading, sub) {
+    function textSlide(heading, sub, scribble) {
+      const lock = el("span", { class: "lockup" }, el("span", { class: "abi", text: "ABI" }), el("span", { class: "yr", text: config.abiYear || "27" }));
+      lock.insertAdjacentHTML("afterbegin", Abi.CAP_SVG);
       const node = el("div", { class: "slide text" }, el("div", { class: "title-slide" },
-        el("span", { class: "lockup" }, el("span", { class: "abi", text: "ABI" }), el("span", { class: "yr", text: config.abiYear || "27" })),
-        el("h2", { text: heading }), sub ? el("p", { text: sub }) : null));
+        lock, el("h2", { text: heading }),
+        scribble ? el("div", { class: "scribble", text: scribble }) : null,
+        sub ? el("p", { text: sub }) : null));
+      Abi.confetti(node, 60);
       node.insertAdjacentHTML("beforeend",
         '<svg class="waves" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">' +
         '<path style="fill:rgba(255,255,255,.08)" d="M0,38 C240,78 480,0 720,30 C960,60 1200,8 1440,38 L1440,90 L0,90Z"/>' +
@@ -471,14 +478,15 @@
         '<path style="fill:rgba(255,255,255,.16)" d="M0,74 C260,54 520,94 760,71 C1000,49 1240,84 1440,67 L1440,90 L0,90Z"/></svg>');
       return { kind: "text", node };
     }
-    if (settings.title.trim()) slides.push(textSlide(settings.title, settings.sub.trim()));
-    items.filter(Boolean).forEach((it) => {
+    if (settings.title.trim()) slides.push(textSlide(settings.title, settings.sub.trim(), "… wie alles anfing"));
+    items.filter(Boolean).forEach((it, k) => {
       const cap = el("div", { class: "cap", text: it.name });
-      const node = el("div", { class: "slide" + (settings.names === "never" ? " noname" : "") },
-        el("img", { src: it.url, alt: "" }), settings.names === "never" ? null : cap);
+      const pol = el("div", { class: "pol" }, el("img", { src: it.url, alt: "" }), settings.names === "never" ? null : cap);
+      pol.style.setProperty("--rot", ((k % 2 ? 1 : -1) * (0.8 + Math.random() * 1.6)).toFixed(2) + "deg");
+      const node = el("div", { class: "slide" + (settings.names === "never" ? " noname" : "") }, pol);
       slides.push({ kind: "photo", node, cap });
     });
-    if (settings.end.trim()) slides.push(textSlide(settings.end, config.schoolName || ""));
+    if (settings.end.trim()) slides.push(textSlide(settings.end, config.schoolName || "", "Schule? Geschafft! 🎓"));
     slides.forEach((s) => show.append(s.node));
 
     const counter = el("span", { class: "k" });
