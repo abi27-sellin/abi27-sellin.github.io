@@ -4,48 +4,43 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Einschulungsfotos – Verwaltung</title>
+<title>ABI 27 — Verwaltung</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=3">
-<meta name="theme-color" content="#0a2540">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
+<meta name="theme-color" content="#f3f1ec">
 </head>
 <body>
 <div class="demo-banner" hidden><b>Demo-Modus:</b> Noch nicht mit der Cloud verbunden – beliebige Login-Daten funktionieren, alles bleibt in diesem Browser.</div>
 
 <!-- Login -->
 <div class="login-page" id="loginView" hidden>
- <header class="sea">
-  <div class="inner">
-    <span class="lockup"><span class="abi">ABI</span><span class="yr" data-cfg="abiYear">27</span></span>
-    <p><span data-cfg="title">Unsere Einschulungsfotos</span> · Verwaltung</p>
-  </div>
-  <svg class="waves" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
-    <path style="fill:rgba(255,255,255,.10)" d="M0,38 C240,78 480,0 720,30 C960,60 1200,8 1440,38 L1440,90 L0,90Z"/>
-    <path style="fill:rgba(255,255,255,.16)" d="M0,58 C300,28 520,84 780,54 C1040,24 1240,70 1440,50 L1440,90 L0,90Z"/>
-    <path style="fill:var(--bg)" d="M0,74 C260,54 520,94 760,71 C1000,49 1240,84 1440,67 L1440,90 L0,90Z"/>
-  </svg>
+ <header class="topbar">
+   <span class="mark">ABI<sup>’27</sup></span>
+   <span class="meta"><span data-cfg="schoolName">CJD Sellin</span><span>Verwaltung</span></span>
  </header>
+ <div class="login-hero"><div class="giant">ABI<span class="yr">’27</span></div></div>
  <section class="login">
   <form class="card" id="loginForm">
+    <h2>Verwaltung <span class="it">Login.</span></h2>
     <div class="msg error" id="loginErr" hidden></div>
     <div class="field">
-      <label for="email">E-Mail</label>
+      <label class="mono" for="email">E-Mail</label>
       <input type="email" id="email" autocomplete="username" required>
     </div>
     <div class="field">
-      <label for="pw">Passwort</label>
+      <label class="mono" for="pw">Passwort</label>
       <input type="password" id="pw" autocomplete="current-password" required>
     </div>
-    <button class="btn primary block" id="loginBtn">Anmelden</button>
+    <button class="btn primary block" id="loginBtn"><span>Anmelden</span><span class="arrow">→</span></button>
   </form>
  </section>
 </div>
 
 <section class="login" id="noAdminView" hidden style="margin-top:12vh">
   <div class="card">
-    <h2 style="margin-bottom:8px">Kein Zugriff</h2>
+    <h2 style="margin-bottom:12px">Kein <span class="it">Zugriff.</span></h2>
     <p>Dieses Konto ist nicht als Verwaltung freigeschaltet.</p>
     <button class="btn" data-logout>Abmelden</button>
   </div>
@@ -56,8 +51,8 @@
   <header class="admin-top">
     <div class="inner">
       <div class="brand">
-        <span class="lockup"><span class="abi">ABI</span><span class="yr" data-cfg="abiYear">27</span></span>
-        <span class="t" data-cfg="title">Unsere Einschulungsfotos</span>
+        <span class="mark">ABI <span class="yr">’27</span></span>
+        <span class="t">Einschulung — Verwaltung</span>
       </div>
       <button class="btn primary" id="startShow">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.29-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg>
@@ -187,15 +182,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="config.js?v=3"></script>
-<script src="app.js?v=3"></script>
+<script src="config.js?v=4"></script>
+<script src="app.js?v=4"></script>
 <script>
 (function () {
   const { api, $, el, errorText, sortStudents, lastName, fillTexts, config } = window.Abi;
   fillTexts();
-  Abi.addCaps();
-  Abi.confetti(document.querySelector(".login-page .sea"), 30);
-  Abi.confetti(document.querySelector(".admin-top"), 18);
 
   let students = [], subs = [], urls = {};
   let filter = "all", openStudentId = null;
@@ -463,30 +455,28 @@
     // Folien bauen
     const show = el("div", { class: "show" });
     const slides = [];
-    function textSlide(heading, sub, scribble) {
-      const lock = el("span", { class: "lockup" }, el("span", { class: "abi", text: "ABI" }), el("span", { class: "yr", text: config.abiYear || "27" }));
-      lock.insertAdjacentHTML("afterbegin", Abi.CAP_SVG);
+    function textSlide(heading, sub, italic) {
       const node = el("div", { class: "slide text" }, el("div", { class: "title-slide" },
-        lock, el("h2", { text: heading }),
-        scribble ? el("div", { class: "scribble", text: scribble }) : null,
-        sub ? el("p", { text: sub }) : null));
-      Abi.confetti(node, 60);
-      node.insertAdjacentHTML("beforeend",
-        '<svg class="waves" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">' +
-        '<path style="fill:rgba(255,255,255,.08)" d="M0,38 C240,78 480,0 720,30 C960,60 1200,8 1440,38 L1440,90 L0,90Z"/>' +
-        '<path style="fill:rgba(255,255,255,.12)" d="M0,58 C300,28 520,84 780,54 C1040,24 1240,70 1440,50 L1440,90 L0,90Z"/>' +
-        '<path style="fill:rgba(255,255,255,.16)" d="M0,74 C260,54 520,94 760,71 C1000,49 1240,84 1440,67 L1440,90 L0,90Z"/></svg>');
+        el("div", { class: "giant" }, "ABI", el("span", { class: "yr", text: "’" + (config.abiYear || "27") })),
+        el("div", { class: "line" },
+          el("h2", {}, heading, italic ? el("span", { class: "it", text: italic }) : null),
+          sub ? el("p", { text: sub }) : null)));
       return { kind: "text", node };
     }
-    if (settings.title.trim()) slides.push(textSlide(settings.title, settings.sub.trim(), "… wie alles anfing"));
-    items.filter(Boolean).forEach((it, k) => {
-      const cap = el("div", { class: "cap", text: it.name });
-      const pol = el("div", { class: "pol" }, el("img", { src: it.url, alt: "" }), settings.names === "never" ? null : cap);
-      pol.style.setProperty("--rot", ((k % 2 ? 1 : -1) * (0.8 + Math.random() * 1.6)).toFixed(2) + "deg");
-      const node = el("div", { class: "slide" + (settings.names === "never" ? " noname" : "") }, pol);
+    if (settings.title.trim()) slides.push(textSlide(settings.title, settings.sub.trim(), "Wie alles anfing."));
+    const photos = items.filter(Boolean);
+    const pad = (n) => String(n).padStart(2, "0");
+    photos.forEach((it, k) => {
+      const cap = settings.names === "never" ? null : el("div", { class: "cap", text: it.name });
+      const node = el("div", { class: "slide" + (settings.names === "never" ? " noname" : "") },
+        el("div", { class: "pol" }, el("img", { src: it.url, alt: "" })), cap,
+        el("div", { class: "idx" }, el("b", { text: pad(k + 1) }), " / " + pad(photos.length)));
       slides.push({ kind: "photo", node, cap });
     });
-    if (settings.end.trim()) slides.push(textSlide(settings.end, config.schoolName || "", "Schule? Geschafft! 🎓"));
+    if (settings.end.trim()) slides.push(textSlide(settings.end, config.schoolName || "", "Geschafft."));
+    show.append(el("div", { class: "chrome" },
+      el("span", { text: "ABI ’" + (config.abiYear || "27") + " — " + (config.schoolName || "") }),
+      el("span", { text: "Einschulungsfotos" })));
     slides.forEach((s) => show.append(s.node));
 
     const counter = el("span", { class: "k" });

@@ -4,118 +4,138 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Einschulungsfoto hochladen</title>
+<title>ABI 27 — Einschulungsfotos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=3">
-<meta name="theme-color" content="#0a2540">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=4">
+<meta name="theme-color" content="#f3f1ec">
 </head>
 <body>
 <div class="demo-banner" hidden><b>Demo-Modus:</b> Noch nicht mit der Cloud verbunden – Fotos werden nur in diesem Browser gespeichert.</div>
 
-<header class="sea">
-  <div class="inner">
-    <div class="topline">
-      <span class="lockup"><span class="abi">ABI</span><span class="yr" data-cfg="abiYear">27</span></span>
-      <span class="school" data-cfg="schoolName" data-hide-empty>CJD Sellin</span>
-    </div>
-    <span class="sticker">Schule?<br>Geschafft! 🎓<small>Abi 2027</small></span>
-    <h1 data-cfg="title">Unsere Einschulungsfotos</h1>
-    <span class="scribble">… wie alles anfing
-      <svg viewBox="0 0 200 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 7 C 50 2, 100 10, 198 4" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-    </span>
-    <p>Liebe Eltern, 12 Jahre ist es her: Schultüte, Ranzen, erster Schultag. Für den <span data-cfg="eventName">Abiball</span> sammeln wir von jedem Kind ein Einschulungsfoto. Am Abend gibt's die große Überraschungs-Show!</p>
-    <p data-cfg-wrap="deadline">Bitte bis zum <b data-cfg="deadline"></b> hochladen.</p>
-  </div>
-  <svg class="waves" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
-    <path style="fill:rgba(255,255,255,.10)" d="M0,38 C240,78 480,0 720,30 C960,60 1200,8 1440,38 L1440,90 L0,90Z"/>
-    <path style="fill:rgba(255,255,255,.16)" d="M0,58 C300,28 520,84 780,54 C1040,24 1240,70 1440,50 L1440,90 L0,90Z"/>
-    <path style="fill:var(--bg)" d="M0,74 C260,54 520,94 760,71 C1000,49 1240,84 1440,67 L1440,90 L0,90Z"/>
-  </svg>
+<header class="topbar">
+  <span class="mark">ABI<sup>’27</sup></span>
+  <span class="meta">
+    <span data-cfg="schoolName">CJD Sellin</span>
+    <span data-cfg="eventName">Abiball 2027</span>
+    <span>Einschulung — Archiv</span>
+  </span>
 </header>
 
+<section class="hero">
+  <div class="giant" aria-label="Abi 27">ABI<span class="apo">’</span><span class="yr" data-cfg="abiYear">27</span></div>
+  <div class="row">
+    <h1>Der erste Schultag.<span class="it">Wie alles anfing.</span></h1>
+    <div class="intro">
+      <span class="mono">(01) — Worum es geht</span>
+      <p>Schultüte, Ranzen, erster Schultag: 12 Jahre später sammeln wir von jedem Kind ein Einschulungsfoto. Am Abend des <span data-cfg="eventName">Abiballs</span> zeigen wir alle zusammen als Überraschung.</p>
+      <p data-cfg-wrap="deadline">Bitte bis zum <b data-cfg="deadline"></b> hochladen.</p>
+    </div>
+  </div>
+</section>
+
 <main class="page">
-
-  <section class="card tape" id="formCard">
-    <div class="msg error" id="err" hidden></div>
-    <form id="form" novalidate>
-      <div class="field">
-        <label for="student">Name Ihres Kindes</label>
-        <select id="student" required disabled>
-          <option value="">Namen werden geladen …</option>
-        </select>
-        <div class="hint">Name nicht in der Liste? Bitte kurz bei den Organisatoren melden.</div>
+  <div class="formgrid">
+    <aside>
+      <div class="sticky">
+        <span class="mono blue">(02) — Upload</span>
+        <h2 style="margin-top:10px">Ein Foto, <span class="it">vier Schritte.</span></h2>
+        <p>Dauert keine Minute. Ein abfotografiertes Papierfoto geht auch, am besten gerade von oben und ohne Spiegelung.</p>
+        <div class="lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          <span>Privat: Andere Eltern sehen Ihr Foto nicht. Nur die Organisatoren haben Zugriff, genutzt wird es nur für die Präsentation am Abiball.</span>
+        </div>
       </div>
+    </aside>
 
-      <div class="field">
-        <span class="label">Einschulungsfoto</span>
-        <label class="drop" id="drop">
-          <input type="file" id="file" accept="image/*">
-          <div id="dropEmpty">
-            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg></span>
-            <div class="big">Foto auswählen</div>
-            <div class="hint">oder hierher ziehen · JPG, PNG oder iPhone-Foto</div>
+    <div>
+      <section class="card" id="formCard">
+        <form id="form" novalidate>
+          <div class="step">
+            <span class="num">01</span>
+            <div>
+              <label class="lbl" for="student">Name Ihres Kindes</label>
+              <select id="student" required disabled>
+                <option value="">Namen werden geladen …</option>
+              </select>
+              <div class="hint">Name fehlt? Bitte kurz bei den Organisatoren melden.</div>
+            </div>
           </div>
-          <div id="dropFull" hidden>
-            <span class="polaroid"><img class="preview" id="preview" alt="Vorschau"><span class="pcap" id="pcap">Erster Schultag!</span></span>
-            <div class="change" style="margin-top:14px">Anderes Foto wählen</div>
+
+          <div class="step">
+            <span class="num">02</span>
+            <div>
+              <span class="lbl">Einschulungsfoto</span>
+              <label class="drop" id="drop">
+                <input type="file" id="file" accept="image/*">
+                <div id="dropEmpty">
+                  <div class="plus">+</div>
+                  <div class="big">Foto auswählen</div>
+                  <p class="hint">oder hierher ziehen · JPG · PNG · iPhone</p>
+                </div>
+                <div id="dropFull" hidden>
+                  <span class="frame"><img class="preview" id="preview" alt="Vorschau"><span class="fcap" id="pcap">Nº — Erster Schultag</span></span>
+                  <div class="change" style="margin-top:14px">Anderes Foto wählen</div>
+                </div>
+              </label>
+            </div>
           </div>
-        </label>
-        <div class="hint">Tipp: Ein abfotografiertes Papierfoto geht auch – am besten gerade von oben und ohne Spiegelung.</div>
-      </div>
 
-      <div class="field">
-        <label for="parent">Ihr Name <span class="optional">(optional)</span></label>
-        <input type="text" id="parent" maxlength="120" autocomplete="name">
-      </div>
+          <div class="step">
+            <span class="num">03</span>
+            <div>
+              <label class="lbl" for="parent">Absender <span class="optional">optional</span></label>
+              <input type="text" id="parent" maxlength="120" autocomplete="name" placeholder="Ihr Name">
+              <textarea id="note" maxlength="500" placeholder="Nachricht an die Organisatoren, z. B. „Unser Kind ist links“" style="margin-top:14px"></textarea>
+            </div>
+          </div>
 
-      <div class="field">
-        <label for="note">Nachricht an die Organisatoren <span class="optional">(optional)</span></label>
-        <textarea id="note" maxlength="500" placeholder="z. B. „Das Kind links ist unseres“"></textarea>
-      </div>
+          <div class="step">
+            <span class="num">04</span>
+            <div>
+              <span class="lbl">Einverständnis</span>
+              <label class="check">
+                <input type="checkbox" id="consent" required>
+                <span>Ich bin einverstanden, dass dieses Foto beim <span data-cfg="eventName">Abiball</span> in einer Präsentation gezeigt wird.</span>
+              </label>
+            </div>
+          </div>
 
-      <div class="field">
-        <label class="check">
-          <input type="checkbox" id="consent" required>
-          <span>Ich bin damit einverstanden, dass dieses Foto beim <span data-cfg="eventName">Abiball</span> in einer Präsentation gezeigt wird.</span>
-        </label>
-      </div>
+          <div class="msg error" id="err" hidden></div>
+          <button class="btn primary block" type="submit" id="submit" style="margin-top:24px"><span>Foto hochladen</span><span class="arrow">→</span></button>
+        </form>
+      </section>
 
-      <button class="btn primary party block" type="submit" id="submit">Foto hochladen 🎒</button>
-    </form>
-
-    <div class="privacy">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-      <span>Ihr Foto ist privat: Andere Eltern können es nicht sehen. Nur die Organisatoren haben Zugriff, und das Foto wird nur für die Präsentation am Abiball genutzt.</span>
+      <section class="card" id="doneCard" hidden>
+        <div class="done">
+          <span class="mono">(✓) — Angekommen</span>
+          <h2 class="it">Danke.</h2>
+          <p>Das Foto von <b id="doneName"></b> ist sicher angekommen. Wir sehen uns beim Abiball.</p>
+          <button class="btn" id="again">Noch ein Foto hochladen →</button>
+        </div>
+      </section>
     </div>
-  </section>
+  </div>
 
-  <section class="card tape" id="doneCard" hidden>
-    <div class="done">
-      <span class="party-emoji">🎉</span>
-      <h2>Vielen <span class="hand">Dank!</span></h2>
-      <p>Das Foto von <b id="doneName"></b> ist angekommen.<br>Wir sehen uns beim Abiball!</p>
-      <button class="btn" id="again">Noch ein Foto hochladen</button>
-    </div>
-  </section>
-
-  <p class="foot" data-cfg-wrap="contactName">Fragen? Bitte an <span data-cfg="contactName"></span> wenden.</p>
-  <p class="foot"><span class="lockup dark"><span class="abi">ABI</span><span class="yr" data-cfg="abiYear">27</span></span> · <span data-cfg="schoolName">CJD Sellin</span></p>
+  <footer class="foot">
+    <span>ABI ’27 — <span data-cfg="schoolName">CJD Sellin</span></span>
+    <span data-cfg-wrap="contactName">Fragen: <span data-cfg="contactName"></span></span>
+    <span>Ostseebad Sellin · Rügen</span>
+  </footer>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
-<script src="config.js?v=3"></script>
-<script src="app.js?v=3"></script>
+<script src="config.js?v=4"></script>
+<script src="app.js?v=4"></script>
 <script>
 (function () {
-  const { api, $, el, errorText, sortStudents, fillTexts, confetti, confettiBurst, addCaps } = window.Abi;
+  const { api, $, el, errorText, sortStudents, fillTexts } = window.Abi;
   fillTexts();
-  addCaps();
-  confetti($(".sea"), 40);
 
   const form = $("#form"), sel = $("#student"), fileInput = $("#file"), drop = $("#drop");
   const err = $("#err"), btn = $("#submit");
+  const BTN_HTML = btn.innerHTML;
   let file = null;
 
   function showErr(m) { err.textContent = m; err.hidden = !m; if (m) err.scrollIntoView({ behavior: "smooth", block: "center" }); }
@@ -133,6 +153,12 @@
     }
   }
 
+  function updateCaption() {
+    const name = sel.value ? sel.options[sel.selectedIndex].text : "Erster Schultag";
+    $("#pcap").textContent = "Nº — " + name;
+  }
+  sel.addEventListener("change", updateCaption);
+
   function setFile(f) {
     if (!f) return;
     if (f.type && !f.type.startsWith("image/") && !/\.(heic|heif)$/i.test(f.name)) {
@@ -147,11 +173,6 @@
     $("#dropEmpty").hidden = true; $("#dropFull").hidden = false; drop.classList.add("has-file");
     updateCaption();
   }
-  function updateCaption() {
-    const name = sel.value ? sel.options[sel.selectedIndex].text.split(" ")[0] : "";
-    $("#pcap").textContent = name ? name + "s erster Schultag" : "Erster Schultag!";
-  }
-  sel.addEventListener("change", updateCaption);
 
   fileInput.addEventListener("change", () => setFile(fileInput.files[0]));
   ["dragenter", "dragover"].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add("over"); }));
@@ -166,7 +187,7 @@
     showErr("");
     btn.disabled = true;
     const label = el("span", { text: "Wird hochgeladen …" });
-    btn.replaceChildren(el("span", { class: "spinner" }), label);
+    btn.replaceChildren(label, el("span", { class: "spinner" }));
     try {
       await api.submit({
         studentId: Number(sel.value), file,
@@ -174,12 +195,11 @@
       }, (step) => (label.textContent = step));
       $("#doneName").textContent = sel.options[sel.selectedIndex].text;
       $("#formCard").hidden = true; $("#doneCard").hidden = false;
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      confettiBurst();
+      $("#doneCard").scrollIntoView({ behavior: "smooth", block: "start" });
     } catch (ex) {
       showErr("Das Hochladen hat nicht geklappt: " + errorText(ex) + " Bitte noch einmal versuchen.");
     } finally {
-      btn.disabled = false; btn.textContent = "Foto hochladen 🎒";
+      btn.disabled = false; btn.innerHTML = BTN_HTML;
     }
   });
 
